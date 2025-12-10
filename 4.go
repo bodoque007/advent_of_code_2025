@@ -21,6 +21,11 @@ func main() {
 
 	height := len(grid)
 	width := len(grid[0])
+	d := [8][2]int{
+		{-1, -1}, {-1, 0}, {-1, 1},
+		{0, -1}, {0, 1},
+		{1, -1}, {1, 0}, {1, 1},
+	}
 
 	for r := 0; r < height; r++ {
 		for c := 0; c < width; c++ {
@@ -29,19 +34,18 @@ func main() {
 				continue
 			}
 			adjacentRolls := 0
-			for i := r - 1; i <= r+1; i++ {
-				for j := c - 1; j <= c+1; j++ {
-					if (i == r && j == c) || i < 0 || i >= height || j < 0 || j >= width {
-						continue
-					}
-					if grid[i][j] == '@' {
-						adjacentRolls++
-					}
-					if adjacentRolls >= 4 {
-						break
-					}
+
+			for _, direction := range d {
+				i, j := r+direction[0], c+direction[1]
+				if i < 0 || i >= height || j < 0 || j >= width {
+					continue
+				}
+
+				if grid[i][j] == '@' {
+					adjacentRolls++
 				}
 			}
+
 			if adjacentRolls < 4 {
 				accessible++
 			}
